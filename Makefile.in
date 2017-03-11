@@ -1,7 +1,7 @@
 #
 # Makefile for cfitsio library:
 #
-# Oct-96 : original version by 
+# Oct-96 : original version by
 #
 #       JDD/WDP
 #       NASA GSFC
@@ -27,7 +27,7 @@ CFITSIO_SONAME	= @CFITSIO_SONAME@
 
 prefix		= @prefix@
 exec_prefix	= @exec_prefix@
-DESTDIR		= 
+DESTDIR		=
 CFITSIO_BIN	= ${DESTDIR}@bindir@
 CFITSIO_LIB	= ${DESTDIR}@libdir@
 CFITSIO_INCLUDE	= ${DESTDIR}@includedir@
@@ -88,11 +88,11 @@ all:
 		@if [ "x${FC}" = x ]; then \
 			${MAKE} all-nofitsio; \
 		else \
-			${MAKE} stand_alone; \
+			${MAKE} shared; \
 		fi
 
 all-nofitsio:
-		${MAKE} stand_alone "FITSIO_SRC="
+		${MAKE} shared "FITSIO_SRC="
 
 stand_alone:	lib${PACKAGE}.a
 
@@ -182,7 +182,7 @@ distclean:	clean
 
 # Make target which outputs the list of the .o contained in the cfitsio lib
 # usefull to build a single big shared library containing Tcl/Tk and other
-# extensions.  used for the Tcl Plugin. 
+# extensions.  used for the Tcl Plugin.
 
 cfitsioLibObjs:
 	@echo ${CORE_OBJECTS}
