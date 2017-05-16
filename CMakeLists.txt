@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
 OPTION (BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 OPTION (USE_PTHREADS "Thread-safe build (using pthreads)" OFF)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}")
 set (LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
 set (INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/")
 
@@ -20,8 +20,8 @@ IF(MSVC OR BORLAND)
     # Define
     ADD_DEFINITIONS(-D_CRT_SECURE_NO_DEPRECATE)
     # Need an empty unistd.h in MSVC for flex-generated eval_l.c:
-    FILE(WRITE ${CMAKE_SOURCE_DIR}/unistd.h "")
-    INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+    FILE(WRITE ${PROJECT_SOURCE_DIR}/unistd.h "")
+    INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 ENDIF()
 
 IF(BORLAND)
@@ -88,7 +88,7 @@ TARGET_LINK_LIBRARIES(TestProg ${LIB_NAME})
 ADD_TEST(TestProg TestProg)
 # Copy testprog.tpt to build directory to allow quick test
 # of ./TestProg (or .\Release\TestProg.exe in MSVC):
-FILE(COPY ${CMAKE_SOURCE_DIR}/testprog.tpt DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+FILE(COPY ${PROJECT_SOURCE_DIR}/testprog.tpt DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 ADD_EXECUTABLE(cookbook cookbook.c)
 TARGET_LINK_LIBRARIES(cookbook ${LIB_NAME})
@@ -106,7 +106,7 @@ TARGET_LINK_LIBRARIES(Fitscopy ${LIB_NAME})
 # To expands the command line arguments in Windows, see:
 # http://msdn.microsoft.com/en-us/library/8bch7bkk.aspx
 if(MSVC)
-  set_target_properties(FPack Funpack PROPERTIES 
+  set_target_properties(FPack Funpack PROPERTIES
     LINK_FLAGS "setargv.obj"
   )
 endif(MSVC)
