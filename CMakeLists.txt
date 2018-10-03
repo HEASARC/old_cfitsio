@@ -84,6 +84,8 @@ target_include_directories(cfitsio
   PUBLIC
     $<INSTALL_INTERFACE:include/>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  PRIVATE
+    $<BUILD_INTERFACE:${CURL_INCLUDE_DIRS}>
 )
 
 target_link_libraries(cfitsio
@@ -91,7 +93,7 @@ target_link_libraries(cfitsio
     ${M_LIB}
   PRIVATE
     ${PTHREADS_LIBRARY}
-    CURL::libcurl
+    ${CURL_LIBRARIES}
 )
 
 if(CURL_FOUND)
