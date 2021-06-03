@@ -61,6 +61,11 @@ else()
   find_library(M_LIB m)
 endif()
 
+# Let MacOS include <unistd.h>
+if(APPLE)
+  add_definitions(-DHAVE_UNISTD_H)
+endif()
+
 set(SRC_FILES
   buffers.c cfileio.c checksum.c drvrfile.c drvrmem.c drvrnet.c drvrsmem.c
   drvrgsiftp.c editcol.c edithdu.c eval_l.c eval_y.c eval_f.c fitscore.c
@@ -76,7 +81,7 @@ set(SRC_FILES
   simplerng.c f77_wrap1.c f77_wrap2.c f77_wrap3.c f77_wrap4.c
 )
 
-find_package(CURL REQUIRED)
+find_package(CURL)
 
 add_library(cfitsio ${LIB_TYPE} ${H_FILES} ${SRC_FILES})
 add_library(cfitsio::cfitsio ALIAS cfitsio)
@@ -84,8 +89,6 @@ target_include_directories(cfitsio
   PUBLIC
     $<INSTALL_INTERFACE:include/>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  PRIVATE
-    $<BUILD_INTERFACE:${CURL_INCLUDE_DIRS}>
 )
 
 target_link_libraries(cfitsio
@@ -93,10 +96,19 @@ target_link_libraries(cfitsio
     ${M_LIB}
   PRIVATE
     ${PTHREADS_LIBRARY}
-    ${CURL_LIBRARIES}
 )
 
 if(CURL_FOUND)
+  target_include_directories(cfitsio
+    PRIVATE
+      $<BUILD_INTERFACE:${CURL_INCLUDE_DIRS}>
+  )
+
+  target_link_libraries(cfitsio
+    PRIVATE
+      ${CURL_LIBRARIES}
+  )
+
   target_compile_definitions(cfitsio
     PRIVATE
       unix CFITSIO_HAVE_CURL HAVE_NET_SERVICES
