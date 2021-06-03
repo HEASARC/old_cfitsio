@@ -61,6 +61,11 @@ else()
   find_library(M_LIB m)
 endif()
 
+# Let MacOS include <unistd.h>
+if(APPLE)
+  add_definitions(-DHAVE_UNISTD_H)
+endif()
+
 set(SRC_FILES
   buffers.c cfileio.c checksum.c drvrfile.c drvrmem.c drvrnet.c drvrsmem.c
   drvrgsiftp.c editcol.c edithdu.c eval_l.c eval_y.c eval_f.c fitscore.c
